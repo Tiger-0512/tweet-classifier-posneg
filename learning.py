@@ -15,7 +15,7 @@ classes = data_preparation.classes
 #class2tensor = data_preparation.class2tensor
 
 
-# 元データを7:3に分ける（7->学習、3->テスト）
+# 元データを7:3に分割（7->学習、3->テスト）
 traindata, testdata = train_test_split(datasets, train_size=0.7)
 
 # 単語のベクトル次元数
@@ -26,16 +26,17 @@ HIDDEN_DIM = 128
 VOCAB_SIZE = len(word2index)
 # 分類先のカテゴリの数
 TAG_SIZE = len(classes)
+
 # モデル宣言
 model = LSTMClassifier(EMBEDDING_DIM, HIDDEN_DIM, VOCAB_SIZE, TAG_SIZE)
-# 損失関数はNLLLoss()を使う。LogSoftmaxを使う時はこれを使うらしい。
+# 損失関数はNLLLoss()を使用 LogSoftmaxを使う時はNLLLoss
 loss_function = nn.NLLLoss()
-# 最適化の手法はSGDで。lossの減りに時間かかるけど、一旦はこれを使う。
+# 最適化手法 lossの減少に時間がかかるため要検討
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-# 各エポックの合計loss値を格納する
+# 各エポックの合計loss値を格納
 losses = []
-# 100ループ回してみる。（バッチ化とかGPU使ってないので結構時間かかる...）
+
 for epoch in range(100):
     all_loss = 0
     for text, cls in zip(traindata['Text'], traindata['Class']):

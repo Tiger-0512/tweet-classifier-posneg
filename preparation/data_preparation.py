@@ -7,6 +7,7 @@ from preparation.preprocessing import pre_processing
 # csvファイル読み込み
 df = pd.read_csv('./tweet_extructor/final_data.csv')
 
+# 分類先のクラス
 classes = ['Pos_Neg', 'Pos', 'Neg', 'Neu', 'Unr']
 
 # Pos&Neg=1であるデータの数を取得
@@ -24,7 +25,7 @@ for cls in classes[1:]:
     # 確認
     # print(len(df[df[cls] == 1]))
 
-# 必要な列のみを抽出
+# 学習に必要な列のみを抽出
 datasets = df[['Class', 'Text']]
 datasets.reset_index(drop=True, inplace=True)
 print(len(datasets))
@@ -55,6 +56,7 @@ for cls in classes:
     class2index[cls] = len(class2index)
 print(class2index)
 
+# 分類先のクラスにIDを割り振り、そのIDの値を持つtensorを返す関数
 def class2tensor(cls):
     return torch.tensor([class2index[cls]], dtype=torch.long)
 # print(class2tensor('Pos'))
