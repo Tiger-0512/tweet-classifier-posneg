@@ -28,6 +28,3 @@ def pre_processing(sentence):
 
 def remove_emoji(src_str):
     return ''.join(c for c in src_str if c not in emoji.UNICODE_EMOJI)
-
-# 例
-# print(pre_processing('Xperiaは食べられないよ？…食べられるの？'))

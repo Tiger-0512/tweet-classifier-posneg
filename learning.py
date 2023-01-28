@@ -32,7 +32,7 @@ model = LSTMClassifier(EMBEDDING_DIM, HIDDEN_DIM, VOCAB_SIZE, TAG_SIZE)
 # 損失関数はNLLLoss()を使用 LogSoftmaxを使う時はNLLLoss
 loss_function = nn.NLLLoss()
 # 最適化手法 lossの減少に時間がかかるため要検討
-optimizer = optim.SGD(model.parameters(), lr=0.01)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
 # 各エポックの合計loss値を格納
 losses = []
@@ -63,6 +63,16 @@ print("done.")
 
 # lossのグラフ表示
 plt.plot(losses)
+plt.show()
+
+
+# モデル保存
+model_path = 'model_GPU.pth'
+torch.save(model.state_dict(), model_path)
+# CPUで読み込む場合
+model_path = 'model_CPU.pth'
+torch.save(model.to('cpu').state_dict(), model_path)
+
 
 # テストデータの母数計算
 test_num = len(testdata)
